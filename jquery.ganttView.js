@@ -14,6 +14,7 @@
  cellHeight: number
  slideWidth: number
  dataUrl: string
+ monthNames: array
  behavior: {
      clickable: boolean,
      draggable: boolean,
@@ -49,6 +50,7 @@
             cellHeight: 31,
             slideWidth: 400,
             vHeaderWidth: 100,
+            monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             behavior: {
                 clickable: true,
                 draggable: true,
@@ -118,8 +120,6 @@
             applyLastClass(div.parent());
         }
 
-        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
         // Creates a 3 dimensional array [year][month][day] of every day
         // between the given start and end dates
         function getDates(start, end) {
@@ -171,7 +171,7 @@
                     monthsDiv.append(jQuery("<div>", {
                         "class": "ganttview-hzheader-month",
                         "css": { "width": (w - 1) + "px" }
-                    }).append(monthNames[m] + "/" + y));
+                    }).append(opts.monthNames[m] + "/" + y));
                     for (var d in dates[y][m]) {
                         daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" })
                             .append(dates[y][m][d].getDate()));

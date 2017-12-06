@@ -13,6 +13,7 @@
  cellWidth: number
  cellHeight: number
  slideWidth: number
+ overflow: string (visible | hidden | scroll | auto)
  dataUrl: string
  monthNames: array
  behavior: {
@@ -49,6 +50,7 @@
             cellWidth: 21,
             cellHeight: 31,
             slideWidth: 400,
+            overflow: "auto",
             vHeaderWidth: 100,
             monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             behavior: {
@@ -108,7 +110,10 @@
 
             var slideDiv = jQuery("<div>", {
                 "class": "ganttview-slide-container",
-                "css": { "width": opts.slideWidth + "px" }
+                "css": {
+                    "width": opts.slideWidth + "px",
+                    "overflow": opts.overflow
+                }
             });
 
             dates = getDates(opts.start, opts.end);

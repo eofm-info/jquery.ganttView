@@ -47,11 +47,10 @@
         var defaults = {
             showWeekends: true,
             showToday: true,
-            cellWidth: 21,
+            cellWidth: 23,
             cellHeight: 31,
             slideWidth: 400,
             overflow: "auto",
-            vHeaderWidth: 100,
             monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             behavior: {
                 clickable: true,
@@ -178,8 +177,10 @@
                         "css": { "width": (w - 1) + "px" }
                     }).append(opts.monthNames[m] + "/" + y));
                     for (var d in dates[y][m]) {
-                        daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" })
-                            .append(dates[y][m][d].getDate()));
+                        daysDiv.append(jQuery("<div>", {
+                            "class": "ganttview-hzheader-day",
+                            "css": { "width": (cellWidth - 1) + "px" }
+                        }).append(dates[y][m][d].getDate()));
                     }
                 }
             }
@@ -195,7 +196,10 @@
             for (var y in dates) {
                 for (var m in dates[y]) {
                     for (var d in dates[y][m]) {
-                        var cellDiv = jQuery("<div>", { "class": "ganttview-grid-row-cell" });
+                        var cellDiv = jQuery("<div>", {
+                            "class": "ganttview-grid-row-cell",
+                            "css": { "width": (cellWidth - 1) + "px" }
+                        });
                         if (DateUtils.isWeekend(dates[y][m][d]) && showWeekends) {
                             cellDiv.addClass("ganttview-weekend");
                         }

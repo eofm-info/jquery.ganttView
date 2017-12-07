@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+    <head>
+        <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="reset.css" />
+        <link rel="stylesheet" type="text/css" href="../jquery.ganttView.css" />
+        <style type="text/css">
+body {
+    font-family: tahoma, verdana, helvetica;
+    font-size: 0.8em;
+    padding: 10px;
+}
+        </style>
+        <title>jQuery Gantt</title>
+    </head>
+    <body>
+
+        <div id="ganttChart"></div>
+        <br/><br/>
+        <div id="eventMessage"></div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        <script type="text/javascript" src="../lib/date.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="../jquery.ganttView.js"></script>
+        <script type="text/javascript" src="data2.js"></script>
+        <script type="text/javascript">
+$(function () {
+    $("#ganttChart").ganttView({
+        data: ganttData,
+        slideWidth: 900,
+        cellWidth: 29,
+        overflow: "hidden",
+        monthNames: [1,2,3,4,5,6,7,8,9,10,11,12],
+        start: new Date(2017,11,31),
+        blockTextDisplay: "none",
+        blockMargin: 0,
+        behavior: {
+            onClick: function (data) {
+                var msg = "You clicked on an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+                $("#eventMessage").text(msg);
+            },
+            onResize: function (data) {
+                var msg = "You resized an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+                $("#eventMessage").text(msg);
+            },
+            onDrag: function (data) {
+                var msg = "You dragged an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
+                $("#eventMessage").text(msg);
+            }
+        }
+    });
+});
+        </script>
+
+    </body>
+</html>

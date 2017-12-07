@@ -259,6 +259,38 @@
                     }
                     block.append(jQuery("<div>", {"class": "ganttview-block-text"}).text(size)
                         .css("display", opts.blockTextDisplay));
+
+                    // TODO: append milestone
+                    if (series.milestones) {
+                        for (var k = 0; k < series.milestones.length; k++) {
+                            var milestone = series.milestones[k];
+                            var milestoneOffset = DateUtils.daysBetween(series.start, milestone.date);
+                            console.log(milestoneOffset);
+                            console.log(milestone.path)
+                            block.append(jQuery("<div>", { "class": "ganttview-block-mark draggable" })
+                                .append(jQuery("<img>", {
+                                    "src": milestone.path,
+                                    "css": {
+                                        "height": "18px",
+                                    }
+                                }))
+                                .draggable({
+                                    grid: [cellWidth, cellWidth],
+                                    axis: "x",
+                                    scroll: false,
+                                })
+                                .css({
+                                    "position": "absolute",
+                                    "height": "25px",
+                                    "width": opts.cellWidth - 3,
+                                    "text-align": "center",
+                                    "padding-top": "3px",
+                                    "margin-left": (opts.cellWidth * milestoneOffset) + "px"
+                                })
+                            );
+                        }
+                    }
+
                     jQuery(rows[rowIdx]).append(block);
                     rowIdx = rowIdx + 1;
                 }

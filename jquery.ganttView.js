@@ -18,6 +18,7 @@
  monthNames: array
  start: date
  blockTextDisplay: string [none | block(default) | ...]
+ blockMargin: number
  behavior: {
      clickable: boolean,
      draggable: boolean,
@@ -56,6 +57,7 @@
             monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             start: null,
             blockTextDisplay: "block",
+            blockMargin: 3,
             behavior: {
                 clickable: true,
                 draggable: true,
@@ -247,8 +249,8 @@
                         "class": "ganttview-block",
                         "title": series.name + ", " + size + " days",
                         "css": {
-                            "width": ((size * cellWidth) - 9) + "px",
-                            "margin-left": ((offset * cellWidth) + 3) + "px"
+                            "width": ((size * cellWidth) - 3 - (opts.blockMargin * 2)) + "px",
+                            "margin-left": ((offset * cellWidth) + opts.blockMargin) + "px"
                         }
                     });
                     addBlockData(block, data[i], series);

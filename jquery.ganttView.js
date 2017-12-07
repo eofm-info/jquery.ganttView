@@ -13,10 +13,11 @@
  cellWidth: number
  cellHeight: number
  slideWidth: number
- overflow: string (visible | hidden | scroll | auto)
+ overflow: string [hidden | auto(default) | ...]
  dataUrl: string
  monthNames: array
  start: date
+ blockTextDisplay: string [none | block(default) | ...]
  behavior: {
      clickable: boolean,
      draggable: boolean,
@@ -54,6 +55,7 @@
             overflow: "auto",
             monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             start: null,
+            blockTextDisplay: "block",
             behavior: {
                 clickable: true,
                 draggable: true,
@@ -253,7 +255,8 @@
                     if (data[i].series[j].color) {
                         block.css("background-color", data[i].series[j].color);
                     }
-                    block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
+                    block.append(jQuery("<div>", {"class": "ganttview-block-text"}).text(size)
+                        .css("display", opts.blockTextDisplay));
                     jQuery(rows[rowIdx]).append(block);
                     rowIdx = rowIdx + 1;
                 }

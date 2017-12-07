@@ -16,6 +16,7 @@
  overflow: string (visible | hidden | scroll | auto)
  dataUrl: string
  monthNames: array
+ start: date
  behavior: {
      clickable: boolean,
      draggable: boolean,
@@ -52,6 +53,7 @@
             slideWidth: 400,
             overflow: "auto",
             monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            start: null,
             behavior: {
                 clickable: true,
                 draggable: true,
@@ -71,7 +73,7 @@
 
             var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
             var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
-            opts.start = startEnd[0];
+            opts.start = opts.start || startEnd[0];
             opts.end = startEnd[1];
 
             els.each(function () {
@@ -366,8 +368,10 @@
             if (!start || !end) { return 0; }
             start = Date.parse(start); end = Date.parse(end);
             if (start.getYear() == 1901 || end.getYear() == 8099) { return 0; }
-            var count = 0, date = start.clone();
-            while (date.compareTo(end) == -1) { count = count + 1; date.addDays(1); }
+            var count = 0;
+            var date = start.clone();
+            while (date.compareTo(end) == -1) { count = count + 1; date.addDays( 1); }
+            while (date.compareTo(end) ==  1) { count = count - 1; date.addDays(-1); }
             return count;
         },
 
@@ -380,11 +384,12 @@
         },
 
         getBoundaryDatesFromData: function (data, minDays) {
-            var minStart = new Date(); maxEnd = new Date();
+            var minStart = new Date();
+            var maxEnd = new Date();
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i].series.length; j++) {
-                    var start = Date.parse(data[i].series[j].start);
-                    var end = Date.parse(data[i].series[j].end)
+                    var start = Date.parse(data[i].series[j].start).clone();
+                    var end = Date.parse(data[i].series[j].end).clone();
                     if (i == 0 && j == 0) { minStart = start; maxEnd = end; }
                     if (minStart.compareTo(start) == 1) { minStart = start; }
                     if (maxEnd.compareTo(end) == -1) { maxEnd = end; }

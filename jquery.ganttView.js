@@ -309,7 +309,7 @@
 
         function bindBlockResize(div, cellWidth, startDate, callback) {
             jQuery("div.ganttview-block", div).resizable({
-                grid: cellWidth,
+                grid: [cellWidth, 0],
                 handles: "e,w",
                 stop: function () {
                     var block = jQuery(this);

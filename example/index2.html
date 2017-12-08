@@ -20,6 +20,7 @@ body {
         <div id="ganttChart"></div>
         <br/><br/>
         <div id="eventMessage"></div>
+        <div id="milestoneEventMessage"></div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
         <script type="text/javascript" src="../lib/date.js"></script>
@@ -49,9 +50,25 @@ $(function () {
             onDrag: function (data) {
                 var msg = "You dragged an event: { start: " + data.start.toString("M/d/yyyy") + ", end: " + data.end.toString("M/d/yyyy") + " }";
                 $("#eventMessage").text(msg);
+                $("#milestoneEventMessage").html(buildMilestoneEventMessage(data));
+            }
+        },
+        milestoneBehavior: {
+            onDrag: function (data) {
+                $("#milestoneEventMessage").html(buildMilestoneEventMessage(data));
             }
         }
     });
+
+    function buildMilestoneEventMessage(data) {
+        var msg = "Milestone.onDrag: <br>"
+        for (var i = 0; i < data.milestones.length; i++) {
+            var m = data.milestones[i];
+            msg += '<img src="' + m.path + '" width="10" hight="10" style="margin-left:4em"> ';
+            msg += 'name: ' + m.name + ', date: ' + m.date + '<br>';
+        }
+        return msg
+    }
 });
         </script>
 

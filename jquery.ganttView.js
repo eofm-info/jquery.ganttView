@@ -27,6 +27,12 @@
      onDrag: function,
      onResize: function
  }
+ milestoneBehavior: {
+     clickable: boolean,
+     draggable: boolean,
+     onClick: function,
+     onDrag: function
+ }
  */
 
 (function (jQuery) {
@@ -62,6 +68,10 @@
                 clickable: true,
                 draggable: true,
                 resizable: true
+            },
+            milestoneBehavior: {
+                clickable: true,
+                draggable: true
             }
         };
 
@@ -259,35 +269,12 @@
                     }
                     block.append(jQuery("<div>", {"class": "ganttview-block-text"}).text(size)
                         .css("display", opts.blockTextDisplay));
-
-                    // TODO: append milestone
+                    // append milestone
                     if (series.milestones) {
                         for (var k = 0; k < series.milestones.length; k++) {
                             var milestone = series.milestones[k];
                             var milestoneOffset = DateUtils.daysBetween(series.start, milestone.date);
-                            console.log(milestoneOffset);
-                            console.log(milestone.path)
-                            block.append(jQuery("<div>", { "class": "ganttview-block-mark draggable" })
-                                .append(jQuery("<img>", {
-                                    "src": milestone.path,
-                                    "css": {
-                                        "height": "18px",
-                                    }
-                                }))
-                                .draggable({
-                                    grid: [cellWidth, cellWidth],
-                                    axis: "x",
-                                    scroll: false,
-                                })
-                                .css({
-                                    "position": "absolute",
-                                    "height": "25px",
-                                    "width": opts.cellWidth - 3,
-                                    "text-align": "center",
-                                    "padding-top": "3px",
-                                    "margin-left": (opts.cellWidth * milestoneOffset) + "px"
-                                })
-                            );
+                            block.append(buildMilestoneElement(milestone, milestoneOffset));
                         }
                     }
 
@@ -311,6 +298,24 @@
             jQuery("div.ganttview-hzheader-months div.ganttview-hzheader-month:last-child", div).addClass("last");
         }
 
+        function buildMilestoneElement(milestone, milestoneOffset) {
+            return jQuery("<div>", {
+                "class": "ganttview-block-milestone draggable",
+                "title": milestone.name
+            }).append(jQuery("<img>", {
+                "src": milestone.path,
+                "alt": milestone.name,
+                "css": {"height": "18px"}
+            })).css({
+                "position": "absolute",
+                "height": "25px",
+                "width": opts.cellWidth - 3,
+                "text-align": "center",
+                "padding-top": "3px",
+                "left": (opts.cellWidth * milestoneOffset) + "px",
+            });
+        }
+
         return {
             render: render
         };
@@ -330,6 +335,14 @@
 
             if (opts.behavior.draggable) {
                 bindBlockDrag(div, opts.cellWidth, opts.start, opts.behavior.onDrag);
+            }
+
+            if (opts.milestoneBehavior.clickable) {
+                bindMilestoneClick(div, opts.milestoneBehavior.onClick);
+            }
+            
+            if (opts.milestoneBehavior.draggable) {
+                bindMilestoneDrag(div, opts.cellWidth, opts.start, opts.milestoneBehavior.onDrag);
             }
         }
 
@@ -363,6 +376,26 @@
             });
         }
 
+        function bindMilestoneClick(div, callback) {
+            jQuery("div.ganttview-block-milestone", div).on("click", function() {
+                if (callback) { callback(jQuery(this).parent().data("block-data")); }
+            });
+        }
+
+        function bindMilestoneDrag(div, cellWidth, startDate, callback) {
+            jQuery("div.ganttview-block-milestone", div).draggable({
+                grid: [cellWidth, cellWidth],
+                axis: "x",
+                scroll: false,
+                stop: function() {
+                    var milestone = jQuery(this);
+                    var block = milestone.parent();
+                    updateDataAndPosition(div, block, cellWidth, startDate);
+                    if (callback) { callback(block.data("block-data")); }
+                }
+            });
+        }
+
         function updateDataAndPosition(div, block, cellWidth, startDate) {
             var container = jQuery("div.ganttview-slide-container", div);
             var scroll = container.scrollLeft();
@@ -376,6 +409,16 @@
             // Set new end date
             var width = block.outerWidth();
             var numberOfDays = Math.round(width / cellWidth) - 1;
+
+            // Set new milestone date
+            var milestones = block.children(".ganttview-block-milestone");
+            for (var i = 0; i < milestones.length; i++) {
+                var milestone = milestones[i];
+                var milestoneDayFromBlock = Math.round(milestone.offsetLeft / cellWidth);
+                var milestoneNewDay = newStart.clone().addDays(milestoneDayFromBlock);
+                block.data("block-data").milestones[i].date = milestoneNewDay;
+            }
+
             block.data("block-data").end = newStart.clone().addDays(numberOfDays);
             jQuery("div.ganttview-block-text", block).text(numberOfDays + 1);
 

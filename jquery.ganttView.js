@@ -87,8 +87,15 @@
 
             var minDays = Math.floor((opts.slideWidth / opts.cellWidth)  + 5);
             var startEnd = DateUtils.getBoundaryDatesFromData(opts.data, minDays);
-            opts.start = opts.start || startEnd[0];
-            opts.end = startEnd[1];
+
+            if (!opts.start) {
+                opts.start = startEnd[0];
+            }
+            if (opts.overflow == "hidden") {
+                opts.end = opts.start.clone().addDays(minDays);
+            } else {
+                opts.end = startEnd[1];
+            }
 
             els.each(function () {
 

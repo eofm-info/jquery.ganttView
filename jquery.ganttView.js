@@ -177,8 +177,11 @@
                     }).append(data[i].name));
                 var seriesDiv = jQuery("<div>", { "class": "ganttview-vtheader-series" });
                 for (var j = 0; j < data[i].series.length; j++) {
-                    seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
-                        .append(data[i].series[j].name));
+                    var seriesItem = data[i].series[j];
+                    var seriesItemDiv = jQuery("<div>", {"class": "ganttview-vtheader-series-name"})
+                        .attr("data-series-item-id", seriesItem.id)
+                        .text(seriesItem.name);
+                    seriesDiv.append(seriesItemDiv);
                 }
                 itemDiv.append(seriesDiv);
                 headerDiv.append(itemDiv);
@@ -264,6 +267,7 @@
                     var offset = DateUtils.daysBetween(start, series.start);
                     var block = jQuery("<div>", {
                         "class": "ganttview-block",
+                        "attr": {"data-series-item-id": series.id},
                         "title": series.name + ", " + size + " days",
                         "css": {
                             "width": ((size * cellWidth) - 3 - (opts.blockMargin * 2)) + "px",
@@ -347,7 +351,7 @@
             if (opts.milestoneBehavior.clickable) {
                 bindMilestoneClick(div, opts.milestoneBehavior.onClick);
             }
-            
+
             if (opts.milestoneBehavior.draggable) {
                 bindMilestoneDrag(div, opts.cellWidth, opts.start, opts.milestoneBehavior.onDrag);
             }

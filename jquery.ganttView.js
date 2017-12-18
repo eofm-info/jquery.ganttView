@@ -284,7 +284,7 @@
                     if (series.milestones) {
                         for (var k = 0; k < series.milestones.length; k++) {
                             var milestone = series.milestones[k];
-                            var milestoneOffset = DateUtils.daysBetween(series.start, milestone.date);
+                            var milestoneOffset = DateUtils.daysBetween(series.start, milestone.point);
                             block.append(buildMilestoneElement(milestone, milestoneOffset));
                         }
                     }
@@ -427,7 +427,7 @@
                 var milestone = milestones[i];
                 var milestoneDayFromBlock = Math.round(milestone.offsetLeft / cellWidth);
                 var milestoneNewDay = newStart.clone().addDays(milestoneDayFromBlock);
-                block.data("block-data").milestones[i].date = milestoneNewDay;
+                block.data("block-data").milestones[i].point = milestoneNewDay;
             }
 
             block.data("block-data").end = newStart.clone().addDays(numberOfDays);

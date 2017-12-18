@@ -80,7 +80,7 @@ $(function () {
         for (var i = 0; i < data.milestones.length; i++) {
             var m = data.milestones[i];
             msg += `<img src="${m.path}" width="10" hight="10" style="margin-left:4em">`;
-            msg += `name: ${m.name}, date: ${m.date.toString("yyyy/M/d")}<br>`;
+            msg += `name: ${m.name}, point: ${m.point.toString("yyyy/M/d")}<br>`;
         }
         msg += '}';
         return msg;

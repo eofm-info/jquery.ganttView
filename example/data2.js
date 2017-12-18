@@ -3,12 +3,12 @@ var ganttData = [
         id: 1, name: "Feature 1", series: [
             { id:1, name: "Planned", start: new Date(2018,00,01), end: new Date(2018,00,03),
                 milestones: [
-                    {name: "milestone dia", date: new Date(2018,00,01), path: "milestone-dia.png"},
-                    {name: "milestone star", date: new Date(2018,00,03), path: "milestone-star.png"}
+                    {name: "milestone dia", point: new Date(2018,00,01), path: "milestone-dia.png"},
+                    {name: "milestone star", point: new Date(2018,00,03), path: "milestone-star.png"}
                 ]},
             { id:2, name: "Actual", start: new Date(2018,00,02), end: new Date(2018,00,05), color: "#f0f0f0",
                 milestones: [
-                    {name: "milestone star", date: new Date(2018,00,04), path: "milestone-star.png"}
+                    {name: "milestone star", point: new Date(2018,00,04), path: "milestone-star.png"}
                 ]},
         ]
     },

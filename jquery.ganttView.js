@@ -21,9 +21,11 @@
  blockMargin: number
  behavior: {
      clickable: boolean,
+     dblclickable: boolean,
      draggable: boolean,
      resizable: boolean,
      onClick: function,
+     onDblclick: function,
      onDrag: function,
      onResize: function
  }
@@ -66,6 +68,7 @@
             blockMargin: 3,
             behavior: {
                 clickable: true,
+                dblclickable: true,
                 draggable: true,
                 resizable: true
             },
@@ -340,6 +343,10 @@
                 bindBlockClick(div, opts.behavior.onClick);
             }
 
+            if (opts.behavior.dblclickable) {
+                bindBlockDblclick(div, opts.behavior.onDblclick);
+            }
+
             if (opts.behavior.resizable) {
                 bindBlockResize(div, opts.cellWidth, opts.start, opts.behavior.onResize);
             }
@@ -359,6 +366,12 @@
 
         function bindBlockClick(div, callback) {
             jQuery("div.ganttview-block", div).on("click", function () {
+                if (callback) { callback(jQuery(this).data("block-data")); }
+            });
+        }
+
+        function bindBlockDblclick(div, callback) {
+            jQuery("div.ganttview-block", div).on("dblclick", function () {
                 if (callback) { callback(jQuery(this).data("block-data")); }
             });
         }

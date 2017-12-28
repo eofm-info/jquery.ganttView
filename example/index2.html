@@ -48,6 +48,9 @@ $(function () {
                 onClick: function (data) {
                     $("#eventMessage").text(buildBlockMessage('block.onClick', data));
                 },
+                onDblclick: function (data) {
+                    $("#eventMessage").text(buildBlockMessage('block.onDblclick', data));
+                },
                 onResize: function (data) {
                     $("#eventMessage").text(buildBlockMessage('block.onResize', data));
                 },
